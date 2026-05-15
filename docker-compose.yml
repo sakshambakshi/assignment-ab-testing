@@ -1,21 +1,26 @@
+version: '3.8'
+
 services:
+  # Development Environment
   api-dev:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ab-testing-dev-upload
+    container_name: ab-testing-dev
     ports:
       - "${PORT:-8080}:8080"
     volumes:
       - ./src:/app/src
       - ./.env:/app/.env
+    # Override the default command to use hot-reloading
     command: npm run dev
     environment:
       - NODE_ENV=development
     env_file:
       - .env
 
-  ab-api-prod:
+  # Production Environment (for testing production locally)
+  api-prod:
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,3 +31,4 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
+    command: npm start  
