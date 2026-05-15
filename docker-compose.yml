@@ -1,0 +1,28 @@
+services:
+  api-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ab-testing-dev-upload
+    ports:
+      - "${PORT:-8080}:8080"
+    volumes:
+      - ./src:/app/src
+      - ./.env:/app/.env
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
+
+  ab-api-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ab-testing-prod
+    ports:
+      - "8081:8080"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
