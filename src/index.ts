@@ -1,8 +1,8 @@
-import express from "express";
+import app from "@/app";
+import { config } from "@/config";
 
-const app = express();
-const PORT = process.env.PORT || 8080;
+import { logger } from "@/utils/logger";
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(config.port, () => {
+  logger.info({ message: `Server running on port ${config.port}` });
 });
