@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { ExperimentService } from "@/services/experiment.service";
 
 export class ExperimentController {
@@ -8,7 +8,11 @@ export class ExperimentController {
     this.experimentService = new ExperimentService();
   }
 
-  public getExperiment = (req: Request, res: Response): any => {
+  public getExperiment = (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): any => {
     const userIdParam = req.query.user_id as string;
 
     if (!userIdParam) {
@@ -30,12 +34,10 @@ export class ExperimentController {
       );
       return res.json({
         user_id: userId,
-        variant,
+        ...variant,
       });
     } catch (error: any) {
-      return res
-        .status(500)
-        .json({ error: error.message || "Internal server error" });
+      next(error);
     }
   };
 }
